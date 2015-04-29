@@ -1,0 +1,14 @@
+{
+  "name": "re-write-js",
+  "version": "1.0.0",
+  "description": "Another translator generator (for, e.g., internationalization)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Wojciech Fraczak",
+  "license": "GPL",
+  "dependencies": {
+    "lodash": "^3.7.0"
+  }
+}
