@@ -7,11 +7,21 @@ var ld = require("lodash");
  *
  * E.g.,
  * var dict = {
- *       "One": function(){ return "Un";}, 
- *       "{} apple(s)": function(n){ return (n > 1) ? (n+" apples") : (n) ? "one apple" : "no apple"; } },
- *     globalContext: {n:100};
+ *    "One": function(){ return "Un";},
+ *    "{} apple(s)": function(n){
+        return (n > 1) ? (n+" apples") : (n) ? "one apple" : "no apple"; } },
+ *     globalContext = {n:100};
  * translator(dict,globalContext)("{n} apple(s)");
  * //--> "100 apples"
+ *
+ * You may also (re)set `dict` and/or `globalContext` later,
+ * as those objects are visible as `__dict` and `__context` properties
+ * of returned function.
+ *
+ * E.g.,
+ * var trans = translator();
+ * trans.__dict = dict;
+ * trans.__context = globalContext;
  ****************/
 var translator = function(dict,globalContext){
     var re = /[{]([^}]*)[}]/g,
@@ -26,14 +36,13 @@ var translator = function(dict,globalContext){
                 };
             }, {name:"",params:[]});
         };
-    dict = dict || {};
-    globalContext = globalContext || {};
     var translatorFn = function(pattern,context) {
         if (! pattern)
             throw new Error("Need a pattern to translate!");
-        var c = ld.assign({}, globalContext, context),
+        var $ = translatorFn,
+            c = ld.assign({}, $.__context, context),
             p = extractPattern(pattern),
-            f = dict[p.name],
+            f = $.__dict[p.name],
             a = ld.map(p.params, function(val) {
                 if (val.indexOf("=") === 0)
                     return val.substring(1);
@@ -47,8 +56,8 @@ var translator = function(dict,globalContext){
             return "_invalide_i18n_"+pattern;
         }
     };
-    translatorFn.__dict = dict;
-    translatorFn.__context = globalContext;
+    translatorFn.__dict = dict || {};
+    translatorFn.__context = globalContext || {};
 
     return translatorFn;
 };
