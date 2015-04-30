@@ -1,14 +1,27 @@
 {
   "name": "re-write-js",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Another translator generator (for, e.g., internationalization)",
   "main": "index.js",
   "scripts": {
-    "test": "node test"
+    "prepublish": "coffee -c index.coffee",
+    "test": "coffee test.coffee"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fraczak/re-write-js.git"
+  },
+  "keywords": [
+    "i18n",
+    "translator",
+    "template"
+  ],
   "author": "Wojciech Fraczak",
   "license": "GPL",
   "dependencies": {
     "lodash": "^3.7.0"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.9.2"
   }
 }
