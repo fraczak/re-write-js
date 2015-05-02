@@ -1,5 +1,7 @@
-Translator = require "./index.coffee"
 ld = require "lodash"
+
+Translator = require "./"
+build_dict = require "./build-dict"
 
 dict =
     "{}": (x) -> x
@@ -20,7 +22,7 @@ globalContext =
     my_name: "Wojciech Fraczak"
     n: 172
 
-translator = new Translator dict, globalContext
+translator = new Translator build_dict(dict), globalContext
 
 fn = translator.translator.bind translator
 
