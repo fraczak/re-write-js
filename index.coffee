@@ -21,7 +21,7 @@ class Translator
             if 0 is val.indexOf "="
                 val. substring 1
             else
-                c[val] or "_?_"
+                c[val]
         try
             return f(a...)
         catch err
