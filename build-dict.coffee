@@ -1,28 +1,30 @@
-ld = require "lodash"
 parse = require "./parse"
+{isFunction} = require "./helpers"
 
 module.exports = (dict) ->
-    dict = ld.transform dict, (res, val, key) ->
-        keyP = parse key
-        if ld.isFunction val
-            res[keyP.name] = val
-        else
-            if val is ""
-                valP = keyP
-            else
-                valP = parse val
-            res[keyP.name] =
-                remap: do ->
-                    inArgs = ld.transform keyP.params, (res, val, i) ->
-                        res[val] = i
-                    , {}
-                    ld.map valP.params, (x) -> inArgs[x]
-                parts: valP.parts
-    (x) ->
-        o = dict[x]
-        return o if ld.isFunction o
-        (args...) ->
-            ld.reduce o.parts, (res, val, i) ->
-                res.concat [val, args[o.remap[i]]]
-            , []
-            .join ""
+  dict = Object.keys(dict).reduce (res, key) ->
+    val = dict[key]
+    keyP = parse key
+    if isFunction val
+      res[keyP.name] = val
+    else
+      valP = if val is "" then keyP else parse val
+      res[keyP.name] =
+        remap: do ->
+          inArgs = keyP.params.reduce (res, val, i) ->
+            res[val] = i
+            res
+          , {}
+          valP.params.map (x) ->
+            inArgs[x]
+        parts: valP.parts
+    res
+  , {}
+  (x) ->
+      o = dict[x]
+      return o if isFunction o
+      (args...) ->
+        o.parts.reduce (res, val, i) ->
+          res.concat [val, args[o.remap[i]]]
+        , []
+        .join ""

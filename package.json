@@ -1,6 +1,6 @@
 {
   "name": "re-write-js",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Another translator generator (for, e.g., internationalization)",
   "main": "index.js",
   "scripts": {
@@ -18,10 +18,8 @@
   ],
   "author": "Wojciech Fraczak",
   "license": "GPL",
-  "dependencies": {
-    "lodash": "^3.7.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "coffee-script": "^1.9.2"
+    "coffeescript": "^2.3.0"
   }
 }

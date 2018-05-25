@@ -1,7 +1,5 @@
-ld = require "lodash"
-
-Translator = require "./"
-build_dict = require "./build-dict"
+{buildTranslatorFn} = require "./index.coffee"
+build_dict = require "./build-dict.coffee"
 
 dict =
     "{}": (x) -> x
@@ -22,11 +20,9 @@ globalContext =
     my_name: "Wojciech Fraczak"
     n: 172
 
-translator = new Translator build_dict(dict), globalContext
+fn = buildTranslatorFn dict, globalContext
 
-fn = translator.translator.bind translator
-
-ld.each [
+[
     'fn("{=as is}")'
     'fn("I am {my_name}")'
     'fn("I am {name}",{name:"myself"})'
@@ -38,8 +34,6 @@ ld.each [
     'fn("{=2}{=3}{n}{=5}")'
     'fn("{=2}{=3}{nn}{=5}")'
     'fn("{=2}{=3}{nn}{=5}",{nn:0})'
-    ]
-, (x) ->
-    console.log " ",">", x
-    console.log " ",eval(x)
+]. map (x) ->
+    console.log " > #{x} =>  #{eval x}"
 
