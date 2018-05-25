@@ -1,6 +1,6 @@
 {
   "name": "re-write-js",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "Another translator generator (for, e.g., internationalization)",
   "main": "index.js",
   "scripts": {
